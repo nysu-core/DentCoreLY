@@ -193,6 +193,7 @@ model FormTemplate {
   version      Int           @default(1)
   isActive     Boolean       @default(true)
   sections     FormSection[]
+  responses    FormResponse[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 
@@ -227,6 +228,7 @@ model FormField {
 model FormResponse {
   id          String   @id @default(uuid())
   templateId  String
+  template    FormTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
   patientId   String
   data        Json
   createdById String
