@@ -1,0 +1,424 @@
+// OrthoCore — Multi-Specialty Dental/Orthodontic Management System
+// Schema supports both SQLite (local/dev) and PostgreSQL (production)
+// Switch via DATABASE_PROVIDER + DATABASE_URL environment variables
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// AUTH & RBAC
+// ============================================================
+
+enum UserStatus {
+  ACTIVE
+  DISABLED
+  PENDING
+}
+
+model User {
+  id            String      @id @default(uuid())
+  email         String      @unique
+  passwordHash  String
+  fullName      String
+  status        UserStatus  @default(ACTIVE)
+  roleId        String
+  role          Role        @relation(fields: [roleId], references: [id])
+  departmentId  String?
+  department    Department? @relation(fields: [departmentId], references: [id])
+  registrationNote String?  // reason the user provided when self-registering
+  statusNote       String?  // admin's approval or denial reason
+
+  refreshTokens          RefreshToken[]
+  auditLogs              AuditLog[]
+  appointmentsAsProvider Appointment[]   @relation("AppointmentProvider")
+  researchRequests       ResearchRequest[] @relation("ResearchRequests")
+  researchReviews        ResearchRequest[] @relation("ResearchReviews")
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  lastLoginAt DateTime?
+
+  @@index([roleId])
+  @@index([departmentId])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Role {
+  id          String           @id @default(uuid())
+  name        String           @unique
+  description String?
+  isSystem    Boolean          @default(false)
+  permissions RolePermission[]
+  users       User[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model Permission {
+  id          String           @id @default(uuid())
+  key         String           @unique
+  module      String
+  description String?
+  roles       RolePermission[]
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+// ============================================================
+// DEPARTMENTS
+// ============================================================
+
+model Department {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  code        String   @unique
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users              User[]
+  patients           PatientDepartmentEnrollment[]
+  formTemplates      FormTemplate[]
+  appointments       Appointment[]
+  waitingListEntries WaitingListEntry[]
+}
+
+// ============================================================
+// PATIENTS
+// ============================================================
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+model Patient {
+  id          String   @id @default(uuid())
+  fileNumber  String   @unique
+  fullName    String
+  birthDate   DateTime
+  gender      Gender
+  nationality String?
+  phoneNumber String?
+  guardianContact String?
+  assignedDoctorName String?
+  supervisorName String?
+  entryDate   DateTime @default(now())
+  isArchived  Boolean  @default(false)
+  createdById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  enrollments        PatientDepartmentEnrollment[]
+  medicalHistory     MedicalHistory?
+  appointments       Appointment[]
+  waitingListEntries WaitingListEntry[]
+  clinicalFiles      ClinicalFile[]
+
+  @@index([fullName])
+  @@index([fileNumber])
+}
+
+model PatientDepartmentEnrollment {
+  id           String     @id @default(uuid())
+  patientId    String
+  patient      Patient    @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id])
+  enrolledAt   DateTime   @default(now())
+
+  @@unique([patientId, departmentId])
+}
+
+model MedicalHistory {
+  id                String   @id @default(uuid())
+  patientId         String   @unique
+  patient           Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  conditions        Json
+  allergies         Json
+  currentMedication String?
+  medicationDose    String?
+  familyHistory     Json
+  habits            Json
+  notes             String?
+  updatedAt         DateTime @updatedAt
+  updatedById       String?
+}
+
+// ============================================================
+// CONFIGURABLE FORM ENGINE
+// ============================================================
+
+enum FieldType {
+  TEXT
+  NUMBER
+  CHECKBOX
+  RADIO
+  SELECT
+  MULTISELECT
+  TEXTAREA
+  DATE
+}
+
+model FormTemplate {
+  id           String        @id @default(uuid())
+  departmentId String
+  department   Department    @relation(fields: [departmentId], references: [id])
+  name         String
+  moduleKey    String
+  version      Int           @default(1)
+  isActive     Boolean       @default(true)
+  sections     FormSection[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([departmentId, moduleKey])
+}
+
+model FormSection {
+  id         String       @id @default(uuid())
+  templateId String
+  template   FormTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  title      String
+  order      Int
+  isEnabled  Boolean      @default(true)
+  fields     FormField[]
+}
+
+model FormField {
+  id         String      @id @default(uuid())
+  sectionId  String
+  section    FormSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  label      String
+  fieldKey   String
+  type       FieldType
+  options    Json?
+  isRequired Boolean     @default(false)
+  order      Int
+  isEnabled  Boolean     @default(true)
+
+  @@unique([sectionId, fieldKey])
+}
+
+model FormResponse {
+  id          String   @id @default(uuid())
+  templateId  String
+  patientId   String
+  data        Json
+  createdById String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([templateId, patientId])
+}
+
+// ============================================================
+// APPOINTMENTS & SCHEDULING
+// ============================================================
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  CHECKED_IN
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+model Appointment {
+  id           String            @id @default(uuid())
+  patientId    String
+  patient      Patient           @relation(fields: [patientId], references: [id])
+  departmentId String
+  department   Department        @relation(fields: [departmentId], references: [id])
+  providerId   String
+  provider     User              @relation("AppointmentProvider", fields: [providerId], references: [id])
+  startTime    DateTime
+  endTime      DateTime
+  status       AppointmentStatus @default(SCHEDULED)
+  reason       String?
+  notes        String?
+  checkedInAt  DateTime?
+  cancelledAt  DateTime?
+  cancelReason String?
+  createdById  String
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  reminders AppointmentReminder[]
+
+  @@index([patientId])
+  @@index([providerId, startTime])
+  @@index([departmentId, startTime])
+}
+
+enum ReminderChannel {
+  EMAIL
+  SMS
+}
+
+enum ReminderStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+model AppointmentReminder {
+  id            String          @id @default(uuid())
+  appointmentId String
+  appointment   Appointment     @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  channel       ReminderChannel
+  scheduledFor  DateTime
+  status        ReminderStatus  @default(PENDING)
+  sentAt        DateTime?
+  createdAt     DateTime        @default(now())
+
+  @@index([appointmentId])
+  @@index([status, scheduledFor])
+}
+
+model WaitingListEntry {
+  id             String     @id @default(uuid())
+  patientId      String
+  patient        Patient    @relation(fields: [patientId], references: [id])
+  departmentId   String
+  department     Department @relation(fields: [departmentId], references: [id])
+  preferredNotes String?
+  isActive       Boolean    @default(true)
+  addedById      String
+  createdAt      DateTime   @default(now())
+
+  @@index([departmentId, isActive])
+}
+
+// ============================================================
+// FILE & IMAGE MANAGEMENT
+// ============================================================
+
+enum FileCategory {
+  INTRAORAL_PHOTO
+  EXTRAORAL_PHOTO
+  PANORAMIC_XRAY
+  CEPHALOMETRIC_XRAY
+  CBCT
+  STUDY_MODEL
+  DOCUMENT
+  OTHER
+}
+
+model ClinicalFile {
+  id              String       @id @default(uuid())
+  patientId       String
+  patient         Patient      @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  category        FileCategory
+  // Storage-provider-agnostic fields — works with local disk, ImageKit, or any future provider
+  storageProvider String       // "local" | "imagekit"
+  fileId          String       // provider's own file identifier
+  url             String       // full access URL
+  thumbnailUrl    String?      // auto-generated by ImageKit; null for local non-images
+  filename        String       // original filename for display
+  mimeType        String
+  size            Int          // bytes
+  notes           String?
+  uploadedById    String
+  createdAt       DateTime     @default(now())
+
+  @@index([patientId, category])
+}
+
+// ============================================================
+// RESEARCH MODULE
+// ============================================================
+
+enum ResearchRequestStatus {
+  PENDING
+  APPROVED
+  DENIED
+}
+
+model ResearchRequest {
+  id            String                @id @default(uuid())
+  title         String
+  description   String
+  // JSON criteria: { departmentId?, dateFrom?, dateTo?, fields: string[] }
+  criteria      Json
+  status        ResearchRequestStatus @default(PENDING)
+  requestedById String
+  requestedBy   User                  @relation("ResearchRequests", fields: [requestedById], references: [id])
+  reviewedById  String?
+  reviewedBy    User?                 @relation("ResearchReviews", fields: [reviewedById], references: [id])
+  reviewedAt    DateTime?
+  reviewNotes   String?
+  datasets      ResearchDataset[]
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+
+  @@index([requestedById])
+  @@index([status])
+}
+
+model ResearchDataset {
+  id           String          @id @default(uuid())
+  requestId    String
+  request      ResearchRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  rowCount     Int
+  exportedById String
+  exportedAt   DateTime        @default(now())
+
+  @@index([requestId])
+}
+
+// ============================================================
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+  action     String
+  entityType String?
+  entityId   String?
+  metadata   Json?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
+
+// ============================================================
+// SYSTEM CONFIGURATION
+// Key-value store for admin-editable settings.
+// ============================================================
+
+model SystemConfig {
+  key         String   @id
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt
+  updatedById String?
+}
