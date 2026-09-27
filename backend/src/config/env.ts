@@ -10,8 +10,13 @@ function required(key: string): string {
 export const config = {
   env: process.env.NODE_ENV || "development",
   port: Number(process.env.PORT) || 4000,
-  corsOrigin: process.env.CORS_ORIGIN || "http://localhost:5173",
-  appUrl: process.env.APP_URL || "http://localhost:5173",
+  corsOrigins: (process.env.CORS_ORIGIN ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:5173"))
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean),
+  appUrl: process.env.APP_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:5173"),
 
   db: {
     provider: (process.env.DATABASE_PROVIDER || "sqlite") as "sqlite" | "postgresql",
@@ -25,15 +30,23 @@ export const config = {
   },
 
   storage: {
-    provider: (process.env.STORAGE_PROVIDER || "local") as "local" | "imagekit",
+    provider: (process.env.STORAGE_PROVIDER || "local") as "local" | "imagekit" | "neon",
+    baseUrl: process.env.SERVER_BASE_URL ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:4000"),
     local: {
       storagePath: process.env.LOCAL_STORAGE_PATH || "./storage",
-      serverBaseUrl: process.env.SERVER_BASE_URL || "http://localhost:4000",
     },
     imagekit: {
       publicKey: process.env.IMAGEKIT_PUBLIC_KEY || "",
       privateKey: process.env.IMAGEKIT_PRIVATE_KEY || "",
       urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT || "",
+    },
+    neon: {
+      bucket: process.env.NEON_STORAGE_BUCKET || "upload",
+      endpoint: process.env.AWS_ENDPOINT_URL_S3 || "",
+      region: process.env.AWS_REGION || "",
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
     },
   },
 

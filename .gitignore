@@ -14,3 +14,6 @@ frontend/dist/
 frontend/*.tsbuildinfo
 .env.local
 node_modules/
+
+.vercel
+.env*

@@ -28,7 +28,7 @@ export class LocalStorageProvider implements StorageProvider {
 
   constructor() {
     this.root = path.resolve(config.storage.local.storagePath);
-    this.baseUrl = config.storage.local.serverBaseUrl.replace(/\/$/, "");
+    this.baseUrl = config.storage.baseUrl.replace(/\/$/, "");
     fs.mkdirSync(this.root, { recursive: true });
   }
 

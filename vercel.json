@@ -1,0 +1,18 @@
+{
+  "services": {
+    "backend": {
+      "root": "backend",
+      "runtime": "node",
+      "entrypoint": "api/index.ts"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api(/.*)?",
+      "destination": {
+        "type": "service",
+        "service": "backend"
+      }
+    }
+  ]
+}

@@ -27,7 +27,7 @@ export function createApp() {
   const app = express();
 
   app.use(helmet());
-  app.use(cors({ origin: config.corsOrigin, credentials: true }));
+  app.use(cors({ origin: config.corsOrigins, credentials: true }));
   app.use(express.json({ limit: "2mb" }));
   app.use(morgan(config.env === "production" ? "combined" : "dev"));
   app.use(

@@ -8,6 +8,7 @@ import { uploadFileSchema, listFilesQuerySchema, updateFileSchema, MAX_FILE_SIZE
 import * as filesService from "./files.service";
 import { config } from "../../config/env";
 import { LocalStorageProvider } from "../../utils/storage/local.provider";
+import { NeonObjectStorageProvider } from "../../utils/storage/neon.provider";
 import { getStorageProvider } from "../../utils/storage";
 
 export const filesRouter = Router();
@@ -98,6 +99,14 @@ filesRouter.delete(
 filesRouter.get(
   "/files/serve/:fileId(*)",
   asyncHandler(async (req: Request, res: Response) => {
+    if (config.storage.provider === "neon") {
+      const provider = getStorageProvider() as NeonObjectStorageProvider;
+      const file = await provider.download(req.params.fileId);
+      if (!file) return res.status(404).json({ error: "File not found" });
+      res.type(file.contentType).send(file.buffer);
+      return;
+    }
+
     if (config.storage.provider !== "local") {
       return res.status(404).json({ error: "Local file serving is disabled when using a remote storage provider" });
     }

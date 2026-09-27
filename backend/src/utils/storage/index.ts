@@ -2,6 +2,7 @@ import { config } from "../../config/env";
 import { StorageProvider } from "./provider.interface";
 import { LocalStorageProvider } from "./local.provider";
 import { ImageKitStorageProvider } from "./imagekit.provider";
+import { NeonObjectStorageProvider } from "./neon.provider";
 import { logger } from "../../config/logger";
 
 // Lazily-initialised singleton — avoids constructing the ImageKit client
@@ -13,6 +14,9 @@ export function getStorageProvider(): StorageProvider {
     switch (config.storage.provider) {
       case "imagekit":
         _provider = new ImageKitStorageProvider();
+        break;
+      case "neon":
+        _provider = new NeonObjectStorageProvider();
         break;
       case "local":
       default:

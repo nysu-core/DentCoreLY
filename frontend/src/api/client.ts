@@ -2,6 +2,7 @@ import axios, { AxiosError } from "axios";
 
 const ACCESS_TOKEN_KEY = "orthocore_access_token";
 const REFRESH_TOKEN_KEY = "orthocore_refresh_token";
+const API_BASE_URL = (import.meta.env.VITE_API_URL || "/api").replace(/\/$/, "");
 
 export const tokenStorage = {
   getAccess: () => localStorage.getItem(ACCESS_TOKEN_KEY),
@@ -16,7 +17,7 @@ export const tokenStorage = {
   },
 };
 
-export const api = axios.create({ baseURL: "/api" });
+export const api = axios.create({ baseURL: API_BASE_URL });
 
 api.interceptors.request.use((cfg) => {
   const token = tokenStorage.getAccess();
@@ -29,7 +30,7 @@ let refreshPromise: Promise<string> | null = null;
 async function refreshAccessToken(): Promise<string> {
   const refreshToken = tokenStorage.getRefresh();
   if (!refreshToken) throw new Error("No refresh token available");
-  const { data } = await axios.post("/api/auth/refresh", { refreshToken });
+  const { data } = await axios.post(`${API_BASE_URL}/auth/refresh`, { refreshToken });
   const refreshed = tokenStorage.getRefresh()!;
   tokenStorage.set(data.accessToken, refreshed);
   return data.accessToken;
