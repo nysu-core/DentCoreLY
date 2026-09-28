@@ -30,18 +30,27 @@ export function registerServiceWorker() {
 
 // Captures the `beforeinstallprompt` event so the app can offer its own
 // install button instead of relying only on the browser's UI.
-let deferredInstallPrompt: any = null;
+interface InstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
+}
+
+let deferredInstallPrompt: InstallPromptEvent | null = null;
 const installListeners = new Set<(available: boolean) => void>();
+
+function notifyInstallAvailability(available: boolean) {
+  installListeners.forEach((listener) => listener(available));
+}
 
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
-  deferredInstallPrompt = e;
-  installListeners.forEach((l) => l(true));
+  deferredInstallPrompt = e as InstallPromptEvent;
+  notifyInstallAvailability(true);
 });
 
 window.addEventListener("appinstalled", () => {
   deferredInstallPrompt = null;
-  installListeners.forEach((l) => l(false));
+  notifyInstallAvailability(false);
 });
 
 export function subscribeInstallAvailable(cb: (available: boolean) => void): () => void {
@@ -50,9 +59,13 @@ export function subscribeInstallAvailable(cb: (available: boolean) => void): () 
   return () => installListeners.delete(cb);
 }
 
-export async function promptInstall(): Promise<void> {
-  if (!deferredInstallPrompt) return;
-  deferredInstallPrompt.prompt();
-  await deferredInstallPrompt.userChoice;
+export async function promptInstall(): Promise<"accepted" | "dismissed" | "unavailable"> {
+  const prompt = deferredInstallPrompt;
+  if (!prompt) return "unavailable";
+
   deferredInstallPrompt = null;
+  notifyInstallAvailability(false);
+  await prompt.prompt();
+  const choice = await prompt.userChoice;
+  return choice.outcome;
 }

@@ -6,7 +6,7 @@ import { startReminderScheduler } from "./jobs/reminderScheduler";
 const app = createApp();
 
 app.listen(config.port, () => {
-  logger.info(`OrthoCore API listening on port ${config.port} [${config.env}]`);
+  logger.info(`Orthodontics Department - Benghazi API listening on port ${config.port} [${config.env}]`);
   startReminderScheduler();
 });
 

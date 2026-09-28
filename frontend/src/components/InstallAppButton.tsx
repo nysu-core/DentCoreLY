@@ -29,7 +29,8 @@ export function InstallAppButton({ variant = "light" }: Props) {
   async function handleInstall() {
     if (promptAvailable) {
       try {
-        await promptInstall();
+        const outcome = await promptInstall();
+        if (outcome === "unavailable") setShowInstructions(true);
       } catch {
         setShowInstructions(true);
       }

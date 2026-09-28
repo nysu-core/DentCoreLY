@@ -148,7 +148,7 @@ main()
 // ── System configuration defaults ──────────────────────────────────────────
 async function seedSystemConfig() {
   const defaults: { key: string; value: string; description: string }[] = [
-    { key: "clinic.name",                   value: "OrthoCore Dental Centre",  description: "Clinic display name used in emails and PDF headers" },
+    { key: "clinic.name",                   value: "Orthodontics Department - Benghazi", description: "Clinic display name used in emails and PDF headers" },
     { key: "clinic.address",                value: "",                         description: "Clinic address shown on reports" },
     { key: "clinic.phone",                  value: "",                         description: "Clinic phone number shown on reports" },
     { key: "clinic.email",                  value: "",                         description: "Clinic contact email shown on reports" },
