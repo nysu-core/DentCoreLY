@@ -26,6 +26,8 @@ import { backupRouter }          from "./modules/backup/backup.routes";
 export function createApp() {
   const app = express();
 
+  if (process.env.VERCEL) app.set("trust proxy", 1);
+
   app.use(helmet());
   app.use(cors({ origin: config.corsOrigins, credentials: true }));
   app.use(express.json({ limit: "2mb" }));
@@ -39,15 +41,16 @@ export function createApp() {
     })
   );
 
-  app.get("/health", (_req, res) =>
+  const healthHandler = (_req: express.Request, res: express.Response) =>
     res.json({
       status:  "ok",
       env:     config.env,
       db:      config.db.provider,
       storage: config.storage.provider,
       email:   config.email.user ? "gmail" : "console (dev stub)",
-    })
-  );
+    });
+  app.get("/health", healthHandler);
+  app.get("/api/health", healthHandler);
 
   app.use("/api/auth",                 authRouter);
   app.use("/api/users",                usersRouter);

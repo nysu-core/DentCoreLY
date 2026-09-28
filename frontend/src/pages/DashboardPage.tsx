@@ -75,13 +75,28 @@ function StatCard({
 export function DashboardPage() {
   const { user } = useAuth();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["dashboard"],
     queryFn: async () => (await api.get<DashboardData>("/dashboard")).data,
     refetchInterval: 60_000,
   });
 
   if (isLoading || !data) {
+    if (isError) {
+      return (
+        <div className="mx-auto flex min-h-64 max-w-lg flex-col items-center justify-center gap-3 text-center">
+          <h1 className="text-lg font-semibold text-slate-800">Dashboard could not load</h1>
+          <p className="text-sm text-slate-500">Your sign-in is active, but the dashboard data could not be reached.</p>
+          <button
+            type="button"
+            onClick={() => void refetch()}
+            className="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
+          >
+            Retry
+          </button>
+        </div>
+      );
+    }
     return (
       <div className="flex items-center justify-center h-64 text-slate-400">
         Loading dashboard…
