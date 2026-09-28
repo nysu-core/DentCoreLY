@@ -6,7 +6,7 @@
 // requests to /api/* — no patient records, medical images, or any
 // confidential API response is ever stored here.
 
-const SHELL_CACHE = "orthocore-shell-v3";
+const SHELL_CACHE = "orthocore-shell-v4";
 
 const SHELL_ASSETS = [
   "/",
@@ -58,7 +58,7 @@ self.addEventListener("fetch", (event) => {
   if (event.request.mode === "navigate") {
     event.respondWith(
       fetch(event.request).catch(
-        () => caches.match(event.request).then((res) => res || caches.match("/offline.html"))
+        () => caches.match(event.request).then((res) => res || caches.match("/index.html") || caches.match("/offline.html"))
       )
     );
     return;

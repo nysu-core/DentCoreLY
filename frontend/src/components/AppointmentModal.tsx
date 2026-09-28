@@ -15,17 +15,18 @@ interface FormValues {
 
 interface Props {
   existing?: Appointment;         // if set, we're rescheduling
+  patient?: Patient;
   defaultDate?: string;           // YYYY-MM-DD pre-fill
   onClose: () => void;
   onSaved: () => void;
 }
 
-export function AppointmentModal({ existing, defaultDate, onClose, onSaved }: Props) {
+export function AppointmentModal({ existing, patient, defaultDate, onClose, onSaved }: Props) {
   const isReschedule = !!existing;
   const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm<FormValues>({
     defaultValues: {
-      patientId: existing?.patientId ?? "",
-      departmentId: existing?.departmentId ?? "",
+      patientId: existing?.patientId ?? patient?.id ?? "",
+      departmentId: existing?.departmentId ?? patient?.enrollments[0]?.departmentId ?? "",
       providerId: existing?.providerId ?? "",
       startTime: existing?.startTime ? toLocalInput(existing.startTime) : defaultDate ? `${defaultDate}T09:00` : "",
       endTime: existing?.endTime ? toLocalInput(existing.endTime) : defaultDate ? `${defaultDate}T09:30` : "",
@@ -36,9 +37,9 @@ export function AppointmentModal({ existing, defaultDate, onClose, onSaved }: Pr
 
   const [departments, setDepartments] = useState<Department[]>([]);
   const [providers, setProviders] = useState<UserSummary[]>([]);
-  const [patientSearch, setPatientSearch] = useState(existing?.patient.fullName ?? "");
+  const [patientSearch, setPatientSearch] = useState(existing?.patient.fullName ?? patient?.fullName ?? "");
   const [patientResults, setPatientResults] = useState<Patient[]>([]);
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(patient ?? null);
   const [serverError, setServerError] = useState<string | null>(null);
 
   const deptId = watch("departmentId");
@@ -108,7 +109,7 @@ export function AppointmentModal({ existing, defaultDate, onClose, onSaved }: Pr
           )}
 
           {/* Patient search */}
-          {!isReschedule && (
+          {!isReschedule && !patient && (
             <div className="relative">
               <label className="block text-sm font-medium text-slate-700 mb-1">Patient *</label>
               <input

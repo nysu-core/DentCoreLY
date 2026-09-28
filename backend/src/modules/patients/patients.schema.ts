@@ -46,3 +46,17 @@ export const medicalHistorySchema = z.object({
   habits: z.array(z.string()).default([]),
   notes: z.string().optional(),
 });
+
+export const createVisitSchema = z.object({
+  visitDate: z.coerce.date(),
+  appointmentId: z.string().uuid().optional(),
+  treatmentPlan: z.string().max(10000).optional(),
+  notes: z.string().max(10000).optional(),
+  clientDraftId: z.string().uuid().optional(),
+});
+
+export const updateVisitSchema = z.object({
+  visitDate: z.coerce.date().optional(),
+  treatmentPlan: z.string().max(10000).optional(),
+  notes: z.string().max(10000).optional(),
+});

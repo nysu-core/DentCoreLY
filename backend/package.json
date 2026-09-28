@@ -13,6 +13,7 @@
     "prisma:push": "prisma db push",
     "prisma:seed": "tsx prisma/seed.ts",
     "prisma:seed:forms": "tsx prisma/seed-forms.ts",
+    "prisma:seed:visits": "tsx prisma/seed-visit-permission.ts",
     "setup:sqlite": "cp .env.sqlite.example .env && prisma db push && tsx prisma/seed.ts && tsx prisma/seed-forms.ts",
     "setup:pg": "cp .env.postgresql.example .env && prisma migrate deploy && tsx prisma/seed.ts && tsx prisma/seed-forms.ts"
   },

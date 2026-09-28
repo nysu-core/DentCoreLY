@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { api } from "../api/client";
 import { openProtectedPdf } from "../api/openPdf";
 import { Patient } from "../types";
+import { PatientVisitsPanel } from "../components/patient/PatientVisitsPanel";
 
 interface PatientEditValues {
   fileNumber: string;
@@ -180,6 +181,8 @@ export function PatientDetailPage() {
           </ul>
         </div>
       </div>
+
+      <PatientVisitsPanel patient={patient} />
 
       <div className="mt-6 bg-white border border-slate-200 rounded-lg p-4">
         <h2 className="font-semibold mb-3 text-sm text-slate-700">Clinical Modules</h2>

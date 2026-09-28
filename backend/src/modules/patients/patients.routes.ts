@@ -7,8 +7,11 @@ import {
   enrollDepartmentSchema,
   listPatientsQuerySchema,
   medicalHistorySchema,
+  createVisitSchema,
+  updateVisitSchema,
 } from "./patients.schema";
 import * as patientsService from "./patients.service";
+import * as visitsService from "./visits.service";
 
 export const patientsRouter = Router();
 
@@ -99,5 +102,31 @@ patientsRouter.put(
     const data = medicalHistorySchema.parse(req.body);
     const history = await patientsService.upsertMedicalHistory(req.params.id, data, req.user!.sub);
     res.json(history);
+  })
+);
+
+patientsRouter.get(
+  "/:id/visits",
+  requirePermission("patients.read"),
+  asyncHandler(async (req, res) => {
+    res.json(await visitsService.listPatientVisits(req.params.id));
+  })
+);
+
+patientsRouter.post(
+  "/:id/visits",
+  requirePermission("visits.manage"),
+  asyncHandler(async (req, res) => {
+    const data = createVisitSchema.parse(req.body);
+    res.status(201).json(await visitsService.createPatientVisit(req.params.id, req.user!.sub, data));
+  })
+);
+
+patientsRouter.patch(
+  "/:id/visits/:visitId",
+  requirePermission("visits.manage"),
+  asyncHandler(async (req, res) => {
+    const data = updateVisitSchema.parse(req.body);
+    res.json(await visitsService.updatePatientVisit(req.params.id, req.params.visitId, data));
   })
 );

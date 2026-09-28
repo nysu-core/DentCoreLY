@@ -23,6 +23,7 @@ const PERMISSIONS: { key: string; module: string; description: string }[] = [
   // Appointments
   { key: "appointments.manage", module: "appointments", description: "Schedule/reschedule/cancel appointments" },
   { key: "appointments.read", module: "appointments", description: "View appointment calendar" },
+  { key: "visits.manage", module: "visits", description: "Record visit treatment plans and notes" },
   // Files / images
   { key: "files.manage", module: "files", description: "Upload/manage clinical images and files" },
   // Reports
@@ -51,6 +52,7 @@ const ROLE_PERMISSIONS: Record<string, string[]> = {
     "files.manage",
     "reports.generate",
     "appointments.read",
+    "visits.manage",
     "dashboard.read",
   ],
   Assistant: [
@@ -59,6 +61,7 @@ const ROLE_PERMISSIONS: Record<string, string[]> = {
     "patients.update",
     "appointments.manage",
     "appointments.read",
+    "visits.manage",
     "reports.generate", // patient cards only, enforced at controller level
   ],
   Researcher: ["research.submit", "research.export", "dashboard.read"],

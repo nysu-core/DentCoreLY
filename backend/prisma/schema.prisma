@@ -136,6 +136,7 @@ model Patient {
   enrollments        PatientDepartmentEnrollment[]
   medicalHistory     MedicalHistory?
   appointments       Appointment[]
+  visits             PatientVisit[]
   waitingListEntries WaitingListEntry[]
   clinicalFiles      ClinicalFile[]
 
@@ -272,10 +273,28 @@ model Appointment {
   updatedAt    DateTime          @updatedAt
 
   reminders AppointmentReminder[]
+  visitRecord PatientVisit?
 
   @@index([patientId])
   @@index([providerId, startTime])
   @@index([departmentId, startTime])
+}
+
+model PatientVisit {
+  id             String       @id @default(uuid())
+  clientDraftId  String?      @unique
+  patientId      String
+  patient        Patient      @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  appointmentId  String?      @unique
+  appointment    Appointment? @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  visitDate      DateTime     @default(now())
+  treatmentPlan  String?      @db.Text
+  notes          String?      @db.Text
+  createdById    String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([patientId, visitDate])
 }
 
 enum ReminderChannel {

@@ -100,6 +100,26 @@ export interface Appointment {
   notes?: string | null;
 }
 
+export interface PatientVisit {
+  id: string;
+  clientDraftId?: string | null;
+  patientId: string;
+  appointmentId?: string | null;
+  visitDate: string;
+  treatmentPlan?: string | null;
+  notes?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  appointment?: {
+    id: string;
+    startTime: string;
+    endTime: string;
+    status: AppointmentStatus;
+    reason?: string | null;
+    provider: { fullName: string };
+  } | null;
+}
+
 export interface WaitingListEntry {
   id: string;
   patientId: string;
