@@ -1,7 +1,7 @@
 {
-  "name": "OrthoBen — Clinical Management",
-  "short_name": "OrthoBen",
-  "description": "Clinical management for orthodontic and dental departments.",
+  "name": "Orthodontics Department - Benghazi",
+  "short_name": "Orthodontics Department - Benghazi",
+  "description": "Orthodontics Department - Benghazi patient care system.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

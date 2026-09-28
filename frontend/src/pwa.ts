@@ -29,7 +29,7 @@ export function registerServiceWorker() {
 }
 
 // Captures the `beforeinstallprompt` event so the app can offer its own
-// "Install OrthoBen" button instead of relying only on the browser's UI.
+// install button instead of relying only on the browser's UI.
 let deferredInstallPrompt: any = null;
 const installListeners = new Set<(available: boolean) => void>();
 

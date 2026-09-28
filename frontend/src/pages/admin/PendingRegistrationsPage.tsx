@@ -191,7 +191,7 @@ export function PendingRegistrationsPage() {
                         value={note}
                         onChange={(e) => setNote(e.target.value)}
                         rows={2}
-                        placeholder="e.g. Welcome to OrthoBen! or: We could not verify your affiliation."
+                        placeholder="e.g. Welcome to Orthodontics Department - Benghazi, or: We could not verify your affiliation."
                         className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm"
                       />
                     </div>

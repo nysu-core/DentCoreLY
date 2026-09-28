@@ -82,8 +82,8 @@ export function RegisterPage() {
         <div className="bg-[#07080b] rounded-t-xl px-8 py-6 text-white">
           <div className="flex items-center gap-3">
             <div className="flex w-full items-center justify-between gap-4">
-              <img src="/WhatsApp_Image_2026-09-27_at_10.02.08-removebg-preview.png" alt="BenUrth logo" className="h-14 w-24 object-contain" />
-              <p className="text-right text-amber-100/70 text-sm">OrthoBen<br />Request a new account</p>
+              <img src="/WhatsApp_Image_2026-09-27_at_10.02.08-removebg-preview.png" alt="Orthodontics Department - Benghazi" className="h-14 w-24 object-contain" />
+              <p className="text-right text-amber-100/70 text-sm">Orthodontics Department - Benghazi<br />Request a new account</p>
             </div>
           </div>
         </div>

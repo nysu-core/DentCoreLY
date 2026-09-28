@@ -14,7 +14,7 @@ function getInstallInstructions() {
   if (/Android/i.test(userAgent)) {
     return "Open your browser menu and choose Install app or Add to Home screen.";
   }
-  return "Open your browser menu and choose Install OrthoBen or Install app.";
+  return "Open your browser menu and choose Install app or Add to Home screen.";
 }
 
 export function InstallAppButton({ variant = "light" }: Props) {
@@ -41,7 +41,7 @@ export function InstallAppButton({ variant = "light" }: Props) {
   return (
     <>
       <button type="button" onClick={handleInstall} className={buttonClass}>
-        Install OrthoBen
+        Install app
       </button>
 
       {showInstructions && (
@@ -57,7 +57,7 @@ export function InstallAppButton({ variant = "light" }: Props) {
             onClick={(event) => event.stopPropagation()}
           >
             <div className="mb-4 flex items-start justify-between gap-4">
-              <h2 id="install-title" className="text-lg font-semibold text-amber-100">Install OrthoBen</h2>
+              <h2 id="install-title" className="text-lg font-semibold text-amber-100">Orthodontics Department - Benghazi</h2>
               <button
                 type="button"
                 onClick={() => setShowInstructions(false)}

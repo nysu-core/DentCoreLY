@@ -66,8 +66,8 @@ export function AppLayout() {
       {/* ── Sidebar ── */}
       <aside className="w-56 border-r border-slate-200 bg-white flex flex-col flex-shrink-0">
         <div className="px-4 py-5 border-b border-slate-100">
-          <img src="/WhatsApp_Image_2026-09-27_at_10.02.08-removebg-preview.png" alt="BenUrth logo" className="mb-2 w-40 max-w-full" />
-          <p className="text-xs text-slate-400">OrthoBen Clinical Management</p>
+          <img src="/WhatsApp_Image_2026-09-27_at_10.02.08-removebg-preview.png" alt="Orthodontics Department - Benghazi" className="mb-2 w-40 max-w-full" />
+          <p className="text-xs text-slate-400">Orthodontics Department - Benghazi</p>
         </div>
 
         <nav className="flex-1 overflow-y-auto py-2 px-2 space-y-0.5">
