@@ -114,7 +114,7 @@ export function ReportsPage() {
           <h2 className="font-semibold text-sm text-slate-700">Appointment Schedule</h2>
         </div>
         <div className="p-5 space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-xs font-medium text-slate-500 mb-1">Date</label>
               <input

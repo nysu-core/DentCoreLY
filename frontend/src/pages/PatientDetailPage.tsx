@@ -157,7 +157,7 @@ export function PatientDetailPage() {
         </form>
       )}
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
         <div className="bg-white border border-slate-200 rounded-lg p-4">
           <h2 className="font-semibold mb-3 text-sm text-slate-700">Demographics</h2>
           <dl className="text-sm space-y-2">

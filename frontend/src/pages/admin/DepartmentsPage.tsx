@@ -83,7 +83,7 @@ export function DepartmentsPage() {
 
   return (
     <div className="max-w-3xl space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="text-xl font-bold">Departments</h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -106,7 +106,7 @@ export function DepartmentsPage() {
           onSubmit={handleSubmit(onCreate)}
           className="bg-white border border-slate-200 rounded-xl p-5 space-y-4"
         >
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Department Name</label>
               <input
@@ -147,8 +147,9 @@ export function DepartmentsPage() {
         </form>
       )}
 
-      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
-        <div className="bg-slate-50 border-b border-slate-200 px-5 py-3 grid grid-cols-[1fr_140px_100px_120px] gap-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">
+      <div role="region" aria-label="Departments list" tabIndex={0} className="overflow-x-auto rounded-xl border border-slate-200 bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
+        <div className="min-w-[640px]">
+        <div className="grid grid-cols-[1fr_140px_100px_120px] gap-3 border-b border-slate-200 bg-slate-50 px-5 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
           <span>Name</span>
           <span>Code</span>
           <span>Status</span>
@@ -161,7 +162,7 @@ export function DepartmentsPage() {
         ) : (
           <div className="divide-y divide-slate-100">
             {departments.map((d) => (
-              <div key={d.id} className="px-5 py-3 grid grid-cols-[1fr_140px_100px_120px] gap-3 items-center text-sm">
+              <div key={d.id} className="grid grid-cols-[1fr_140px_100px_120px] items-center gap-3 px-5 py-3 text-sm">
                 <input
                   defaultValue={d.name}
                   onBlur={(e) => renameDept(d, e.target.value)}
@@ -191,6 +192,7 @@ export function DepartmentsPage() {
             ))}
           </div>
         )}
+        </div>
       </div>
     </div>
   );

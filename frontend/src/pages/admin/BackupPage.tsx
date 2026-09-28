@@ -48,7 +48,7 @@ export function BackupPage() {
 
   return (
     <div className="max-w-3xl space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="text-xl font-bold">Backup & Restore</h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -100,8 +100,8 @@ export function BackupPage() {
       )}
 
       {backups.length > 0 && (
-        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
-          <table className="w-full text-sm">
+        <div role="region" aria-label="Backup history" tabIndex={0} className="overflow-x-auto rounded-xl border border-slate-200 bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
+          <table className="w-full min-w-[620px] text-sm">
             <thead className="bg-slate-50 border-b border-slate-200">
               <tr>
                 <th className="px-4 py-2.5 text-left text-xs font-semibold text-slate-500">Filename</th>

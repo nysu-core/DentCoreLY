@@ -58,7 +58,7 @@ export function InstallAppButton({ variant = "light" }: Props) {
             onClick={(event) => event.stopPropagation()}
           >
             <div className="mb-4 flex items-start justify-between gap-4">
-              <h2 id="install-title" className="text-lg font-semibold text-amber-100">Orthodontics Department - Benghazi</h2>
+              <h2 id="install-title" className="text-lg font-semibold text-amber-100">Orthodontics Department - Faculty of Dentistry - Benghazi</h2>
               <button
                 type="button"
                 onClick={() => setShowInstructions(false)}

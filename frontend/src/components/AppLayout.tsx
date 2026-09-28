@@ -86,8 +86,8 @@ export function AppLayout() {
       <aside className={`fixed inset-y-0 left-0 z-50 flex w-72 shrink-0 flex-col border-r border-slate-200 bg-white transition-transform duration-200 md:static md:z-auto md:translate-x-0 md:transform-none ${collapsed ? "md:w-16" : "md:w-56"} ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <div className={`flex min-h-[88px] items-start justify-between border-b border-slate-100 px-4 py-4 ${collapsed ? "md:justify-center md:px-1" : ""}`}>
           <div className={`min-w-0 ${collapsed ? "md:hidden" : ""}`}>
-            <img src="/WhatsApp_Image_2026-09-27_at_10.02.08-removebg-preview.png" alt="Orthodontics Department - Benghazi" className="mb-2 w-40 max-w-full" />
-            <p className="text-xs text-slate-400">Orthodontics Department - Benghazi</p>
+            <img src="/WhatsApp_Image_2026-09-27_at_10.02.08-removebg-preview.png" alt="Orthodontics Department - Faculty of Dentistry - Benghazi" className="mb-2 w-40 max-w-full" />
+            <p className="text-xs text-slate-400">Orthodontics Department - Faculty of Dentistry - Benghazi</p>
           </div>
           {collapsed && <img src="/icon-64.png" alt="" className="hidden h-9 w-9 object-contain md:block" />}
           <div className="flex shrink-0 items-center gap-1">
@@ -178,7 +178,7 @@ export function AppLayout() {
           <button type="button" aria-label="Open navigation" aria-expanded={mobileOpen} onClick={() => setMobileOpen(true)} className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-slate-300 text-xl text-slate-700 hover:bg-slate-50">
             ☰
           </button>
-          <span className="min-w-0 truncate text-sm font-semibold text-slate-800">Orthodontics Department - Benghazi</span>
+          <span className="min-w-0 truncate text-sm font-semibold text-slate-800">Orthodontics Department - Faculty of Dentistry - Benghazi</span>
         </div>
         <Outlet />
       </main>

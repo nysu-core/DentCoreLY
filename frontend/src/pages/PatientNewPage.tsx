@@ -56,7 +56,7 @@ export function PatientNewPage() {
           {errors.fullName && <p className="text-xs text-red-600 mt-1">{errors.fullName.message}</p>}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Birth Date</label>
             <input type="date" {...register("birthDate", { required: "Birth date is required" })} className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm" />
@@ -71,7 +71,7 @@ export function PatientNewPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Nationality</label>
             <input {...register("nationality")} className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm" />
@@ -82,7 +82,7 @@ export function PatientNewPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Assigned Doctor</label>
             <input {...register("assignedDoctorName")} className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm" />

@@ -122,7 +122,7 @@ export function UsersPage() {
 
   return (
     <div className="max-w-5xl space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="text-xl font-bold">Users</h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -144,7 +144,7 @@ export function UsersPage() {
           onSubmit={handleSubmit(onCreate)}
           className="bg-white border border-slate-200 rounded-xl p-5 space-y-4"
         >
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
               <input
@@ -186,7 +186,7 @@ export function UsersPage() {
               </select>
               {errors.roleId && <p className="text-xs text-red-500 mt-1">{errors.roleId.message}</p>}
             </div>
-            <div className="col-span-2">
+            <div className="sm:col-span-2">
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Department <span className="text-slate-400 font-normal">(optional)</span>
               </label>
@@ -225,8 +225,14 @@ export function UsersPage() {
         className="w-full max-w-sm border border-slate-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
       />
 
-      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
-        <div className="bg-slate-50 border-b border-slate-200 px-5 py-3 grid grid-cols-[1.3fr_1fr_170px_170px_100px_190px] gap-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">
+      <div
+        role="region"
+        aria-label="Users list"
+        tabIndex={0}
+        className="overflow-x-auto rounded-xl border border-slate-200 bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500"
+      >
+        <div className="min-w-[980px]">
+        <div className="grid grid-cols-[1.3fr_1fr_170px_170px_100px_190px] gap-3 border-b border-slate-200 bg-slate-50 px-5 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
           <span>Name</span>
           <span>Email</span>
           <span>Role</span>
@@ -243,7 +249,7 @@ export function UsersPage() {
             {items.map((u) => (
               <div
                 key={u.id}
-                className="px-5 py-3 grid grid-cols-[1.3fr_1fr_170px_170px_100px_190px] gap-3 items-center text-sm"
+                className="grid grid-cols-[1.3fr_1fr_170px_170px_100px_190px] items-center gap-3 px-5 py-3 text-sm"
               >
                 <span className="font-medium truncate">{u.fullName}</span>
                 <span className="text-slate-500 truncate">{u.email}</span>
@@ -302,6 +308,7 @@ export function UsersPage() {
             ))}
           </div>
         )}
+        </div>
       </div>
 
       {totalPages > 1 && (
@@ -328,7 +335,7 @@ export function UsersPage() {
 
       {resetTarget && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-5 w-full max-w-sm space-y-4">
+          <div className="max-h-[90dvh] w-full max-w-sm space-y-4 overflow-y-auto rounded-xl bg-white p-5">
             <h3 className="font-semibold text-sm">Reset password for {resetTarget.fullName}</h3>
             <input
               autoFocus

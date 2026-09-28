@@ -61,12 +61,12 @@ export function registrationReceivedEmail(opts: { fullName: string; role: string
 
 export function accountApprovedEmail(opts: { fullName: string; role: string; note?: string | null }): string {
   return base(
-    "Account Approved — Orthodontics Department - Benghazi",
+    "Account Approved — Orthodontics Department - Faculty of Dentistry - Benghazi",
     `<h2>Welcome, ${opts.fullName}! 🎉</h2>
     <p>Your <strong>${clinicName}</strong> account has been <strong style="color:#16a34a">approved</strong>. You can now log in and access the system.</p>
      ${opts.note ? `<div class="notice">💬 <strong>Note from administrator:</strong> ${opts.note}</div>` : ""}
      <p>Your assigned role is <strong>${opts.role}</strong>.</p>
-    <a href="${appUrl}/login" class="btn">Log In to Orthodontics Department - Benghazi →</a>
+    <a href="${appUrl}/login" class="btn">Log In to Orthodontics Department - Faculty of Dentistry - Benghazi →</a>
      <p style="font-size:12px;color:#94a3b8">If the button above does not work, copy this URL into your browser:<br/>${appUrl}/login</p>`
   );
 }
@@ -75,7 +75,7 @@ export function accountApprovedEmail(opts: { fullName: string; role: string; not
 
 export function accountDeniedEmail(opts: { fullName: string; reason?: string | null }): string {
   return base(
-    "Registration Update — Orthodontics Department - Benghazi",
+    "Registration Update — Orthodontics Department - Faculty of Dentistry - Benghazi",
     `<h2>Hi ${opts.fullName},</h2>
     <p>We have reviewed your registration request for <strong>${clinicName}</strong> and unfortunately we are unable to approve your account at this time.</p>
      ${opts.reason ? `<div class="notice">💬 <strong>Reason:</strong> ${opts.reason}</div>` : ""}

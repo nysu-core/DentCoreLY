@@ -137,9 +137,9 @@ export function FormBuilderPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-6">
         {/* Template list */}
-        <div className="col-span-1">
+        <div className="md:col-span-1">
           <div className="bg-white border border-slate-200 rounded-lg p-3">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-semibold text-slate-700">Templates</span>
@@ -198,7 +198,7 @@ export function FormBuilderPage() {
         </div>
 
         {/* Section/field editor */}
-        <div className="col-span-3">
+        <div className="min-w-0 md:col-span-3">
           {!selectedTemplate && (
             <div className="bg-white border border-dashed border-slate-300 rounded-lg p-8 text-center text-sm text-slate-400">
               Select or create a template on the left to edit its sections and fields.

@@ -60,7 +60,7 @@ export function FieldEditorPanel({ field, onSaved, onDelete }: Props) {
         <div className="text-xs text-red-600 bg-red-50 border border-red-200 rounded p-2">{error}</div>
       )}
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
           <label className="block text-xs font-medium text-slate-600 mb-1">Label</label>
           <input

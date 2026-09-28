@@ -177,7 +177,7 @@ export function ResearchPage() {
               placeholder="Describe your research objectives and why this data is needed…"
               className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm"/>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
               <label className="block text-xs font-medium text-slate-600 mb-1">Patient Entry Date From</label>
               <input type="date" value={dateFrom} onChange={e=>setDateFrom(e.target.value)} className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm"/>
@@ -189,7 +189,7 @@ export function ResearchPage() {
           </div>
           <div>
             <label className="block text-xs font-medium text-slate-600 mb-2">Data Fields Requested * ({fields.length} selected)</label>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-1.5 max-h-64 overflow-y-auto border border-slate-200 rounded-lg p-3">
+            <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-1.5 max-h-64 overflow-y-auto border border-slate-200 rounded-lg p-3 md:grid-cols-3">
               {EXPORTABLE_FIELDS.map((f) => (
                 <label key={f} className="inline-flex items-center gap-2 text-xs cursor-pointer hover:text-brand-700">
                   <input type="checkbox" checked={fields.includes(f)} onChange={()=>toggleField(f)} className="rounded border-slate-300"/>
@@ -213,7 +213,7 @@ export function ResearchPage() {
 
           {/* Stats */}
           {stats && (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+            <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2 md:grid-cols-3">
               <div className="bg-brand-50 border border-brand-100 rounded-lg p-3">
                 <p className="text-xs text-slate-500">Total Rows</p>
                 <p className="text-2xl font-bold text-brand-700">{stats.totalRows}</p>
@@ -241,7 +241,7 @@ export function ResearchPage() {
           {/* Table preview */}
           {preview && (
             <div className="overflow-x-auto border border-slate-200 rounded-lg max-h-72">
-              <table className="text-xs w-full">
+              <table className="w-full min-w-max text-xs">
                 <thead className="bg-slate-100 sticky top-0">
                   <tr>{preview.columns.map((c:string)=>(
                     <th key={c} className="px-2 py-1.5 text-left font-medium text-slate-600 whitespace-nowrap">{FIELD_LABELS[c]??c}</th>

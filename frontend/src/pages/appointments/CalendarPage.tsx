@@ -42,6 +42,7 @@ const STATUS_COLORS: Record<string, string> = {
 export function CalendarPage() {
   const qc = useQueryClient();
   const [week, setWeek] = useState(() => weekStart(new Date()));
+  const [mobileDate, setMobileDate] = useState(() => new Date());
   const [showModal, setShowModal] = useState(false);
   const [rescheduleAppt, setRescheduleAppt] = useState<Appointment | null>(null);
   const [clickedDate, setClickedDate] = useState<string | undefined>(undefined);
@@ -73,6 +74,12 @@ export function CalendarPage() {
     return appointments.filter((a) => a.startTime.startsWith(key));
   }
 
+  function moveMobileDay(offset: number) {
+    const nextDate = addDays(mobileDate, offset);
+    setMobileDate(nextDate);
+    if (nextDate < week || nextDate >= weekEnd) setWeek(weekStart(nextDate));
+  }
+
   async function changeStatus(id: string, action: string) {
     await api.post(`/appointments/${id}/${action}`);
     refresh();
@@ -80,20 +87,42 @@ export function CalendarPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="mb-4 flex flex-col gap-3 sm:mb-6 md:flex-row md:items-center md:justify-between">
         <h1 className="text-xl font-bold">Appointment Calendar</h1>
-        <div className="flex items-center gap-3">
-          <button onClick={() => setWeek((w) => addDays(w, -7))} className="px-3 py-1.5 border border-slate-200 rounded-md text-sm hover:bg-slate-50">← Prev</button>
+        <div className="hidden flex-wrap items-center gap-3 md:flex">
+          <button onClick={() => { setWeek((w) => addDays(w, -7)); setMobileDate((d) => addDays(d, -7)); }} className="rounded-md border border-slate-200 px-3 py-1.5 text-sm hover:bg-slate-50">← Prev week</button>
           <span className="text-sm font-medium">{fmt(week)} – {fmt(addDays(week, 6))}</span>
-          <button onClick={() => setWeek((w) => addDays(w, 7))} className="px-3 py-1.5 border border-slate-200 rounded-md text-sm hover:bg-slate-50">Next →</button>
-          <button onClick={() => { setClickedDate(isoDate(new Date())); setShowModal(true); }} className="bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium px-4 py-1.5 rounded-md">
+          <button onClick={() => { setWeek((w) => addDays(w, 7)); setMobileDate((d) => addDays(d, 7)); }} className="rounded-md border border-slate-200 px-3 py-1.5 text-sm hover:bg-slate-50">Next week →</button>
+          <button onClick={() => { setClickedDate(isoDate(new Date())); setShowModal(true); }} className="rounded-md bg-brand-500 px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-600">
             + Book
           </button>
         </div>
       </div>
 
+      <div className="mb-4 flex items-center justify-between gap-2 md:hidden">
+        <button type="button" onClick={() => moveMobileDay(-1)} aria-label="Previous day" className="h-10 w-10 shrink-0 rounded-md border border-slate-200 text-lg text-slate-700">‹</button>
+        <span className="min-w-0 flex-1 text-center text-sm font-semibold text-slate-700">{fmt(mobileDate)}</span>
+        <button type="button" onClick={() => moveMobileDay(1)} aria-label="Next day" className="h-10 w-10 shrink-0 rounded-md border border-slate-200 text-lg text-slate-700">›</button>
+        <button type="button" onClick={() => { setClickedDate(isoDate(mobileDate)); setShowModal(true); }} className="shrink-0 rounded-md bg-brand-500 px-3 py-2 text-sm font-medium text-white">+ Book</button>
+      </div>
+
+      <section className="mb-5 space-y-2 md:hidden" aria-label={`Appointments for ${fmt(mobileDate)}`}>
+        {apptsByDay(mobileDate).length === 0 ? (
+          <p className="rounded-md border border-dashed border-slate-300 px-4 py-8 text-center text-sm text-slate-500">No appointments scheduled for this day.</p>
+        ) : apptsByDay(mobileDate).map((appointment) => (
+          <button key={appointment.id} type="button" onClick={() => setSelectedAppt(appointment)} className={`w-full rounded-md border p-3 text-left ${STATUS_COLORS[appointment.status] ?? "border-slate-200 bg-white text-slate-800"}`}>
+            <div className="flex items-start justify-between gap-3">
+              <span className="min-w-0 truncate text-sm font-semibold">{appointment.patient.fullName}</span>
+              <span className="shrink-0 text-xs font-medium">{fmtTime(appointment.startTime)}–{fmtTime(appointment.endTime)}</span>
+            </div>
+            <p className="mt-1 truncate text-xs opacity-80">{appointment.reason || "Visit"} · {appointment.provider.fullName}</p>
+            <div className="mt-2"><StatusBadge status={appointment.status} /></div>
+          </button>
+        ))}
+      </section>
+
       {/* Week grid */}
-      <div className="grid grid-cols-7 gap-2">
+      <div className="hidden grid-cols-7 gap-2 md:grid">
         {days.map((day) => {
           const dayAppts = apptsByDay(day);
           const isToday = isoDate(day) === isoDate(new Date());
@@ -130,7 +159,7 @@ export function CalendarPage() {
 
       {/* Appointment detail drawer */}
       {selectedAppt && (
-        <div className="fixed inset-y-0 right-0 w-80 bg-white border-l border-slate-200 shadow-xl z-40 overflow-y-auto">
+        <div className="fixed inset-x-0 bottom-0 z-40 max-h-[85vh] overflow-y-auto rounded-t-xl border-t border-slate-200 bg-white shadow-xl sm:inset-y-0 sm:left-auto sm:right-0 sm:w-80 sm:max-h-none sm:rounded-none sm:border-l sm:border-t-0">
           <div className="flex items-center justify-between p-4 border-b">
             <h2 className="font-semibold text-sm">Appointment</h2>
             <button onClick={() => setSelectedAppt(null)} className="text-slate-400 hover:text-slate-700">✕</button>

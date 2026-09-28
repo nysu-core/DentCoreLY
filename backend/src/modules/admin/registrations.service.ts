@@ -69,7 +69,7 @@ export async function reviewRegistration(
   if (decision === "APPROVED") {
     await sendMail({
       to:      user.email,
-      subject: `✅ Account Approved — Orthodontics Department - Benghazi`,
+      subject: `✅ Account Approved — Orthodontics Department - Faculty of Dentistry - Benghazi`,
       html:    accountApprovedEmail({
         fullName: user.fullName,
         role:     user.role.name,
@@ -87,7 +87,7 @@ export async function reviewRegistration(
   } else {
     await sendMail({
       to:      user.email,
-      subject: `Registration Update — Orthodontics Department - Benghazi`,
+      subject: `Registration Update — Orthodontics Department - Faculty of Dentistry - Benghazi`,
       html:    accountDeniedEmail({
         fullName: user.fullName,
         reason:   statusNote,

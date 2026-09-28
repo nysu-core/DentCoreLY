@@ -91,7 +91,7 @@ export function AuditLogPage() {
 
       {/* Filters */}
       <div className="bg-white border border-slate-200 rounded-xl p-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-4">
           <div>
             <label className="block text-xs font-medium text-slate-500 mb-1">Search Action</label>
             <input
@@ -135,7 +135,7 @@ export function AuditLogPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+      <div role="region" aria-label="Audit log table" tabIndex={0} className="overflow-x-auto rounded-xl border border-slate-200 bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
         {isLoading && (
           <div className="text-center py-8 text-slate-400 text-sm">Loading…</div>
         )}
@@ -144,7 +144,7 @@ export function AuditLogPage() {
         )}
 
         {data && data.items.length > 0 && (
-          <table className="w-full text-sm">
+          <table className="w-full min-w-[850px] text-sm">
             <thead className="bg-slate-50 border-b border-slate-200">
               <tr>
                 <th className="px-4 py-2.5 text-left text-xs font-semibold text-slate-500 w-36">Timestamp</th>

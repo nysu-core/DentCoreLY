@@ -78,7 +78,7 @@ export function ResearchAdminPage() {
       </div>
 
       {/* Summary counts */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
         {[
           { label: "Pending Review", count: pending,  color: "amber" },
           { label: "Approved",       count: approved, color: "green" },
@@ -92,7 +92,7 @@ export function ResearchAdminPage() {
       </div>
 
       {/* Filter tabs */}
-      <div className="flex gap-2 border-b border-slate-200 pb-0">
+      <div className="flex flex-wrap gap-2 border-b border-slate-200 pb-0">
         {STATUS_FILTERS.map(({ value, label }) => (
           <button
             key={value}

@@ -29,8 +29,8 @@ export function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-[#07080b] px-4 py-8">
       <section className="w-full max-w-md overflow-hidden border border-amber-200/15 bg-[#111217] shadow-2xl shadow-black/40">
         <div className="px-8 pt-8 pb-5 text-center">
-          <img src="/WhatsApp_Image_2026-09-27_at_10.02.08-removebg-preview.png" alt="Orthodontics Department - Benghazi" className="mx-auto mb-5 w-full max-w-[300px]" />
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-amber-100/70">Orthodontics Department - Benghazi</p>
+          <img src="/WhatsApp_Image_2026-09-27_at_10.02.08-removebg-preview.png" alt="Orthodontics Department - Faculty of Dentistry - Benghazi" className="mx-auto mb-5 w-full max-w-[300px]" />
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-amber-100/70">Orthodontics Department - Faculty of Dentistry - Benghazi</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 px-6 pb-5 sm:px-9">

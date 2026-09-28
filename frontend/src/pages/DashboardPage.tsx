@@ -125,7 +125,7 @@ export function DashboardPage() {
       </div>
 
       {/* ── stat cards ── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-4 md:grid-cols-4">
         <StatCard label="Active Patients" value={summary.totalPatients}
           sub={`+${summary.newPatientsThisMonth} this month`} href="/patients" color="brand" />
         <StatCard label="Today's Appointments" value={summary.todayAppointments}
@@ -136,7 +136,7 @@ export function DashboardPage() {
           sub="finished sessions" color="green" />
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-4 md:grid-cols-4">
         <StatCard label="Waiting List" value={summary.waitingListCount}
           sub="patients waiting" href="/waiting-list" color="slate" />
         <StatCard label="Pending Reminders" value={summary.pendingReminders}

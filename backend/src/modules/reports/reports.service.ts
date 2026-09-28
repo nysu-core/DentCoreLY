@@ -3,7 +3,7 @@ import { prisma } from "../../config/prisma";
 import { NotFoundError } from "../../middleware/error";
 import { PdfBuilder } from "./pdf-builder";
 
-const CLINIC_NAME = "Orthodontics Department - Benghazi";
+const CLINIC_NAME = "Orthodontics Department - Faculty of Dentistry - Benghazi";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -184,7 +184,7 @@ export async function generatePatientIdCard(patientId: string, res: Response) {
   doc.rect(8, 0, 332, 48).fill("#07080b");
 
   doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(13)
-    .fontSize(9).text("Orthodontics Department - Benghazi", 20, 10, { width: 210, lineBreak: false });
+    .fontSize(8).text("Orthodontics Department - Faculty of Dentistry - Benghazi", 20, 10, { width: 210, lineBreak: false });
   doc.fillColor("#94a3b8").font("Helvetica").fontSize(8)
     .text("Patient Identification Card", 20, 28);
 
@@ -229,7 +229,7 @@ export async function generatePatientIdCard(patientId: string, res: Response) {
   // Footer
   doc.rect(8, cardHeight - 20, 332, 20).fill("#f1f5f9");
   doc.fillColor("#64748b").font("Helvetica").fontSize(7)
-    .text(`Issued: ${fmtDate(new Date())}  ·  Orthodontics Department - Benghazi`, 16, cardHeight - 14);
+    .text(`Issued: ${fmtDate(new Date())}  ·  Orthodontics Department - Faculty of Dentistry - Benghazi`, 16, cardHeight - 14);
 
   doc.end();
 }

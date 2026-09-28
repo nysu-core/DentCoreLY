@@ -50,7 +50,7 @@ export function PatientFilesPage() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
           <Link to={`/patients/${patientId}`} className="text-sm text-brand-600 hover:underline">
             ← {patient?.fullName}
@@ -119,7 +119,7 @@ export function PatientFilesPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {displayed.map((file) => (
           <FileThumbnailCard
             key={file.id}

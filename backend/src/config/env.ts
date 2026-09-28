@@ -57,7 +57,7 @@ export const config = {
     from:        process.env.GMAIL_USER || "",
     user:        process.env.GMAIL_USER || "",
     appPassword: process.env.GMAIL_APP_PASSWORD || "",
-    clinicName:  process.env.CLINIC_NAME || "Orthodontics Department - Benghazi",
+    clinicName:  process.env.CLINIC_NAME || "Orthodontics Department - Faculty of Dentistry - Benghazi",
   },
 
   rateLimit: {

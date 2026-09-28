@@ -17,7 +17,7 @@ export function PatientsListPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-xl font-bold">Patients</h1>
         <Link to="/patients/new" className="bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium px-4 py-2 rounded-md">
           + New Patient
@@ -36,8 +36,8 @@ export function PatientsListPage() {
       {error && <div className="text-red-600 text-sm">Failed to load patients.</div>}
 
       {data && (
-        <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
-          <table className="w-full text-sm">
+        <div role="region" aria-label="Patients list" tabIndex={0} className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
+          <table className="w-full min-w-[680px] text-sm">
             <thead className="bg-slate-50 text-slate-600 text-left">
               <tr>
                 <th className="px-4 py-2">File #</th>
